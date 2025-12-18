@@ -187,63 +187,197 @@ function onDrop(targetId) {
 
 <style scoped>
 .page {
-  max-width: 760px;
+  max-width: 900px;
   margin: 0 auto;
+  padding: 0 20px;
 }
+
 h1 {
-  margin: 0 0 12px;
+  margin: 0 0 24px;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: -0.5px;
 }
+
 .filters {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   align-items: center;
-  margin: 10px 0 14px;
+  margin: 0 0 24px;
+  padding: 16px 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  flex-wrap: wrap;
 }
+
+.filters button {
+  padding: 8px 20px;
+  border: 2px solid transparent;
+  background: white;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.filters button:hover {
+  border-color: #e0e0e0;
+  transform: translateY(-1px);
+}
+
 .filters button.on {
   font-weight: 700;
-  border: 2px solid #333;
+  border-color: #333;
+  background: #333;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
+
 .remain {
   margin-left: auto;
   opacity: 0.75;
+  font-size: 15px;
+  font-weight: 600;
+  color: #666;
+  background: white;
+  padding: 8px 16px;
+  border-radius: 8px;
 }
+
 .form {
   display: grid;
-  grid-template-columns: 1fr 120px 160px auto auto;
-  gap: 10px;
+  grid-template-columns: 2fr 140px 180px auto auto;
+  gap: 12px;
   align-items: center;
-  margin: 10px 0 16px;
+  margin: 0 0 32px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
+
 input,
 select,
 button {
-  padding: 10px 12px;
-  font-size: 16px;
+  padding: 12px 16px;
+  font-size: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #333;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
 button {
   cursor: pointer;
+  background: #333;
+  color: white;
+  border: none;
+  font-weight: 600;
 }
+
+button:hover:not(:disabled) {
+  background: #1a1a1a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  background: #999;
 }
+
+.form button:last-child {
+  background: #dc3545;
+}
+
+.form button:last-child:hover:not(:disabled) {
+  background: #c82333;
+}
+
 .list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 24px;
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
+
 .hint {
   opacity: 0.7;
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 16px;
+  color: #666;
 }
+
 .tip {
-  margin-top: 12px;
+  margin-top: 32px;
+  padding: 16px 20px;
   opacity: 0.7;
+  text-align: center;
+  background: #f8f9fa;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #666;
 }
+
+@media (max-width: 860px) {
+  .form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .form input[type="text"] {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (max-width: 720px) {
+  .page {
+    padding: 0 12px;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .filters {
+    padding: 12px 16px;
+  }
+
+  .filters button {
+    padding: 6px 16px;
+    font-size: 14px;
+  }
+
+  .remain {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
   .form {
     grid-template-columns: 1fr;
+    padding: 16px;
+    gap: 10px;
+  }
+
+  input,
+  select,
+  button {
+    padding: 10px 12px;
+    font-size: 15px;
   }
 }
 </style>

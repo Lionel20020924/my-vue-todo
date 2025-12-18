@@ -173,90 +173,225 @@ function onTouchEnd() {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 12px;
-  border: 1px solid #ddd;
+  gap: 16px;
+  border: 1px solid #e5e5e5;
   border-radius: 12px;
-  padding: 10px 12px;
+  padding: 16px 20px;
   background: #fff;
   cursor: grab;
-  transition: opacity 0.2s, box-shadow 0.2s;
+  transition: all 0.2s ease;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
+
+.item:hover {
+  border-color: #d0d0d0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
 .item:active {
   cursor: grabbing;
 }
+
 .item.dragging {
-  opacity: 0.6;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  opacity: 0.65;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
   cursor: grabbing;
+  transform: scale(1.02) rotate(1deg);
 }
+
 .left {
   display: flex;
-  gap: 10px;
+  gap: 14px;
   flex: 1;
+  align-items: flex-start;
 }
+
+.left input[type="checkbox"] {
+  margin-top: 2px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #333;
+}
+
 .content {
   flex: 1;
 }
+
 .textRow {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
+
 .text {
   font-size: 16px;
-  line-height: 1.25;
+  line-height: 1.5;
   cursor: text;
+  color: #1a1a1a;
+  font-weight: 500;
 }
+
+.text:hover {
+  color: #333;
+}
+
 .done {
   text-decoration: line-through;
-  opacity: 0.6;
+  opacity: 0.5;
+  color: #999;
 }
+
 .meta {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
-  opacity: 0.8;
   font-size: 13px;
+  flex-wrap: wrap;
 }
+
 .pill {
-  padding: 2px 8px;
+  padding: 4px 12px;
   border-radius: 999px;
-  border: 1px solid #ccc;
-}
-.pill.low {
-  opacity: 0.75;
-}
-.pill.medium {
+  font-size: 12px;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
+
+.pill.low {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+.pill.medium {
+  background: #fff3e0;
+  color: #ef6c00;
+  border: 1px solid #ffe0b2;
+}
+
 .pill.high {
-  font-weight: 800;
-  border-width: 2px;
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
 }
+
 .due {
-  opacity: 0.85;
+  opacity: 0.8;
+  color: #666;
+  font-weight: 500;
 }
+
 .editRow {
   display: grid;
   grid-template-columns: 1fr 120px 160px auto auto;
-  gap: 8px;
+  gap: 10px;
   align-items: center;
 }
+
 .editInput {
-  padding: 8px 10px;
-  font-size: 16px;
+  padding: 10px 12px;
+  font-size: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
 }
-.actions button,
+
+.editInput:focus {
+  outline: none;
+  border-color: #333;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.editRow select,
+.editRow input[type="date"] {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
 .editRow button {
-  padding: 8px 10px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
+
+.editRow button:first-of-type {
+  background: #333;
+  color: white;
+}
+
+.editRow button:first-of-type:hover {
+  background: #1a1a1a;
+}
+
+.editRow button:last-of-type {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.editRow button:last-of-type:hover {
+  background: #e0e0e0;
+}
+
+.actions button {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  background: #fff;
+  color: #dc3545;
+  border: 1px solid #dc3545;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.actions button:hover {
+  background: #dc3545;
+  color: white;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+@media (max-width: 860px) {
+  .editRow {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .editInput {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (max-width: 720px) {
+  .item {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .left {
+    gap: 12px;
+  }
+
+  .text {
+    font-size: 15px;
+  }
+
   .editRow {
     grid-template-columns: 1fr;
+  }
+
+  .actions button {
+    padding: 6px 12px;
+    font-size: 13px;
   }
 }
 </style>
