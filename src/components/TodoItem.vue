@@ -48,22 +48,82 @@ function saveEdit() {
 }
 
 // ===== Drag & Drop =====
+const isDragging = ref(false);
+
+// Mouse drag
 function onDragStart() {
+  isDragging.value = true;
   emit("drag-start", props.todo.id);
+}
+function onDragEnd() {
+  isDragging.value = false;
 }
 function onDrop() {
   emit("drop-on", props.todo.id);
+}
+
+// Touch drag
+let touchStartY = 0;
+let touchStartTime = 0;
+const LONG_PRESS_DELAY = 300; // ms
+
+function onTouchStart(e) {
+  touchStartY = e.touches[0].clientY;
+  touchStartTime = Date.now();
+
+  setTimeout(() => {
+    if (touchStartTime && Date.now() - touchStartTime >= LONG_PRESS_DELAY) {
+      isDragging.value = true;
+      emit("drag-start", props.todo.id);
+    }
+  }, LONG_PRESS_DELAY);
+}
+
+function onTouchMove(e) {
+  if (!isDragging.value) {
+    // Cancel long press if moved too much before drag started
+    const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
+    if (deltaY > 10) {
+      touchStartTime = 0;
+    }
+    return;
+  }
+
+  e.preventDefault();
+
+  // Find element under touch point
+  const touch = e.touches[0];
+  const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
+  const targetItem = elements.find(el => el.classList.contains('item'));
+
+  if (targetItem && targetItem !== e.currentTarget) {
+    // Trigger drop on the target
+    const targetId = targetItem.dataset.todoId;
+    if (targetId) {
+      emit("drop-on", parseInt(targetId));
+    }
+  }
+}
+
+function onTouchEnd() {
+  isDragging.value = false;
+  touchStartTime = 0;
 }
 </script>
 
 <template>
   <li
     class="item"
-    :class="{ dragging: false }"
+    :class="{ dragging: isDragging }"
+    :data-todo-id="todo.id"
     draggable="true"
     @dragstart="onDragStart"
+    @dragend="onDragEnd"
     @dragover.prevent
     @drop.prevent="onDrop"
+    @touchstart="onTouchStart"
+    @touchmove="onTouchMove"
+    @touchend="onTouchEnd"
   >
     <div class="left">
       <input type="checkbox" :checked="todo.done" @change="emit('toggle', todo)" />
@@ -118,6 +178,19 @@ function onDrop() {
   border-radius: 12px;
   padding: 10px 12px;
   background: #fff;
+  cursor: grab;
+  transition: opacity 0.2s, box-shadow 0.2s;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.item:active {
+  cursor: grabbing;
+}
+.item.dragging {
+  opacity: 0.6;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  cursor: grabbing;
 }
 .left {
   display: flex;

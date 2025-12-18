@@ -96,6 +96,7 @@ function clearCompleted() {
 
 // ===== Drag & Drop reorder（基于整个 todos 的顺序）=====
 const draggingId = ref(null);
+let lastDropTarget = null;
 
 function onDragStart(id) {
   draggingId.value = id;
@@ -104,6 +105,12 @@ function onDragStart(id) {
 function onDrop(targetId) {
   const fromId = draggingId.value;
   if (fromId == null || fromId === targetId) return;
+
+  // Prevent duplicate drops on same target (for touch events)
+  if (lastDropTarget === targetId && Date.now() - (lastDropTarget?.time || 0) < 100) {
+    return;
+  }
+  lastDropTarget = { id: targetId, time: Date.now() };
 
   const fromIndex = todos.value.findIndex((t) => t.id === fromId);
   const toIndex = todos.value.findIndex((t) => t.id === targetId);
@@ -115,6 +122,11 @@ function onDrop(targetId) {
   todos.value = copy;
 
   draggingId.value = null;
+
+  // Clear lastDropTarget after a delay
+  setTimeout(() => {
+    lastDropTarget = null;
+  }, 200);
 }
 </script>
 
@@ -168,7 +180,7 @@ function onDrop(targetId) {
     </ul>
 
     <p class="tip">
-      Tip: double click text to edit. Drag items to reorder.
+      Tip: double click text to edit. Drag items to reorder (long press on mobile).
     </p>
   </div>
 </template>
